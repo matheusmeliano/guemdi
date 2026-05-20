@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guemdi - Guia Empresarial Digital</title>
+    <link rel="icon" type="image/png" href="images/guemdi-com-fundo.png">
+    <link rel="stylesheet" href="style.css">
+    <!-- Ícones do Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Font Awesome para ícones de redes sociais -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Fonte Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DYJRXR3JS9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DYJRXR3JS9');
+    </script>
+</head>
+<body>
+    
+    <header>
+        <div class="container header-content">
+            <a href="/" style="text-decoration: none; color: inherit; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                <img src="images/guemdi-sem-fundo.png" alt="Logo Guemdi" style="height: 50px; width: auto;">
+                <h1 style="margin-bottom: 0;">Guemdi</h1>
+            </a>
+            <p style="font-size: 0.9rem; margin-top: -10px; font-weight: 600;">Guia Empresarial Digital</p>
+            
+            <div id="locationStatus" class="header-location" onclick="openLocationModal()" title="Clique/toque para alterar localização">
+                <span style="font-size: 0.7rem; font-weight: 400; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Localidade</span>
+                <span id="locationText" style="font-weight: 600;"><span class="material-icons">location_off</span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="O que você procura? (ex: padaria, farmácia)" autocomplete="off" disabled style="opacity: 0.6; cursor: not-allowed;">
+            <button id="searchBtn" onclick="searchBusinesses()" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <span class="material-icons">search</span>
+            </button>
+        </div>
+
+        <!-- Aviso de Permissão de Localização -->
+        <div id="locationPermissionAlert" class="location-alert hidden">
+            <div class="location-alert-content">
+                <span class="material-icons" style="font-size: 24px;">location_off</span>
+                <p>Acesso à localização bloqueado. Por favor, permita o acesso clicando no ícone ao lado esquerdo na barra de endereço.</p>
+                <!-- Botão removido conforme solicitado -->
+            </div>
+        </div>
+
+        <!-- Seção do Mascote (Estado Inicial) -->
+        <div id="mascotWelcome" class="mascot-container hidden">
+            <div class="mascot-bubble">
+                <p id="mascotText">Olá! 👋</p>
+            </div>
+            <img src="images/mascote-guemdi.png" alt="Mascote Guemdi" class="mascot-image">
+        </div>
+
+        <div id="results" class="results-grid hidden">
+            <!-- Os resultados serão inseridos aqui via JavaScript -->
+        </div>
+
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+            <p>Buscando as melhores opções...</p>
+        </div>
+
+        <div id="noResults" class="hidden no-results">
+            <span class="material-icons">sentiment_dissatisfied</span>
+            <p>Nenhum local encontrado por perto.</p>
+        </div>
+        
+        <div id="errorMsg" class="hidden error-msg"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Guemdi - Guia Empresarial Digital</p>
+        <p style="margin-top: 5px; font-size: 0.8rem;">Feito com <span class="material-icons" style="font-size: 14px; vertical-align: middle; color: var(--secondary-color);">favorite</span> pela <a href="https://www.heybrothers.site/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;"><strong>HEYBROTHERS</strong></a></p>
+        <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.8; max-width: 1000px; margin-left: auto; margin-right: auto; line-height: 1.4;">
+            Esta plataforma está integrada aos dados do Google Meu Negócio, organizando informações públicas de forma estruturada e de fácil acesso. Além disso, oferecemos recursos e serviços adicionais exclusivos dentro da própria plataforma, proporcionando mais visibilidade e praticidade para empresas e usuários.
+        </p>
+    </footer>
+
+    <!-- Botão Scroll to Top -->
+    <button id="scrollToTopBtn" class="scroll-to-top hidden" onclick="scrollToTop()">
+        <span class="material-icons">keyboard_arrow_up</span>
+    </button>
+
+    <script src="script.js"></script>
+
+    <!-- Modal de Seleção de Localidade -->
+    <div id="locationModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLocationModal()">&times;</span>
+            <h3>Escolha sua localização</h3>
+            
+            <!-- Opção A: Modo Livre -->
+            <button id="btnFreeMode" class="location-option-btn" onclick="setFreeMode()" style="margin-bottom: 10px; background-color: var(--primary-color); opacity: 0.6; cursor: not-allowed;" disabled>
+                <span class="material-icons">explore</span>
+                Modo Livre (Qualquer Cidade)
+            </button>
+
+            <!-- Opção B: Localização Atual (Restrita) -->
+            <button id="btnCurrentLocation" class="location-option-btn" onclick="useCurrentLocation()" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <span class="material-icons">my_location</span>
+                Usar localização atual (Restrito)
+            </button>
+            
+            <div class="divider">ou selecione manualmente</div>
+            
+            <!-- Opção C: Seleção Manual -->
+            <div class="city-search-container">
+                <input type="text" id="citySearchInput" placeholder="Aguardando localização..." onkeyup="searchCity(this.value)" autocomplete="off" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <div id="citySearchResults" class="city-results-list hidden"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
