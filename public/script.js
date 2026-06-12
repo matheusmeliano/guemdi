@@ -1113,18 +1113,10 @@ function renderResults(places) {
         let websiteHtml = '';
 
         if (websiteUrl) {
-            let websiteLabel = 'Acessar site';
-
-            try {
-                websiteLabel = new URL(websiteUrl).hostname.replace(/^www\./, '');
-            } catch (error) {
-                console.warn('URL de website invalida:', websiteUrl);
-            }
-
             websiteHtml = `
                 <div class="place-info">
                     <span class="material-icons">language</span>
-                    <a href="${websiteUrl.replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">${websiteLabel}</a>
+                    <a href="${websiteUrl.replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">Visitar site</a>
                 </div>
             `;
         }

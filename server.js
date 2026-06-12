@@ -163,7 +163,9 @@ app.get('/buscar', async (req, res) => {
                 }
             }
 
-            if (cachedData) {
+            const shouldRefreshMissingWebsite = cachedData && !cachedData.website_url;
+
+            if (cachedData && !shouldRefreshMissingWebsite) {
                 // Usar dados do cache
                 // Calcular distância
                 let distanceKm = 0;
