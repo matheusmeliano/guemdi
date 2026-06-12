@@ -456,16 +456,20 @@ header p {
 }
 
 .place-info {
-    margin-bottom: 8px;
     display: flex;
     align-items: flex-start;
+    gap: 8px;
     color: var(--text-light);
     font-size: 0.95rem;
+    line-height: 1.35;
+}
+
+.place-info + .place-info {
+    margin-top: 10px;
 }
 
 .place-info .material-icons {
     font-size: 22px; /* Aumentado de 18px */
-    margin-right: 8px;
     margin-top: 2px;
     color: var(--primary-color);
 }
