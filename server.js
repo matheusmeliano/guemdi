@@ -316,6 +316,7 @@ app.get('/buscar', async (req, res) => {
                     rawDistance: distanceKm, // Campo auxiliar para ordenação
                     photo: photoUrl,
                     googleMapsUrl: cachedData.google_maps_url,
+                    website: cachedData.website_url || null,
                     location: cachedData.geometry ? cachedData.geometry.location : null,
                     openNow: openNow
                 };
@@ -326,7 +327,7 @@ app.get('/buscar', async (req, res) => {
             const detailsParams = {
                 place_id: placeId,
                 // Adicionando address_components para extrair cidade e estado
-                fields: 'name,formatted_address,address_components,formatted_phone_number,rating,photos,geometry,url,opening_hours',
+                fields: 'name,formatted_address,address_components,formatted_phone_number,rating,photos,geometry,url,website,opening_hours',
                 key: apiKey
             };
 
@@ -422,6 +423,7 @@ app.get('/buscar', async (req, res) => {
                                 geometry: details.geometry,
                                 opening_hours: details.opening_hours,
                                 google_maps_url: details.url,
+                                website_url: details.website || null,
                                 updated_at: new Date().toISOString()
                             }, { onConflict: 'place_id' });
                     } catch (e) {
@@ -454,6 +456,7 @@ app.get('/buscar', async (req, res) => {
                     rawDistance: distanceKm, // Campo auxiliar para ordenação no servidor
                     photo: photoUrl,
                     googleMapsUrl: details.url, 
+                    website: details.website || null,
                     location: details.geometry.location,
                     openNow: openNow
                 };

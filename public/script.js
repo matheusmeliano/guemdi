@@ -1109,6 +1109,25 @@ function renderResults(places) {
         const rawPhone = place.phone.replace(/\D/g, '');
         const whatsappLink = rawPhone ? `https://wa.me/${rawPhone}` : '#';
         const hasPhone = rawPhone.length > 0;
+        const websiteUrl = place.website || '';
+        let websiteHtml = '';
+
+        if (websiteUrl) {
+            let websiteLabel = 'Acessar site';
+
+            try {
+                websiteLabel = new URL(websiteUrl).hostname.replace(/^www\./, '');
+            } catch (error) {
+                console.warn('URL de website invalida:', websiteUrl);
+            }
+
+            websiteHtml = `
+                <div class="place-info">
+                    <span class="material-icons">language</span>
+                    <a href="${websiteUrl.replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">${websiteLabel}</a>
+                </div>
+            `;
+        }
 
         let imageHtml;
         if (place.photo) {
@@ -1173,6 +1192,7 @@ function renderResults(places) {
                     <span class="material-icons">phone</span>
                     <span>${place.phone}</span>
                 </div>
+                ${websiteHtml}
                 <div class="place-distance" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 5px;">
                     <span style="color: var(--primary-color); font-weight: 700;">Há ${place.distance} km de você</span>
                     ${openingStatusHtml}
